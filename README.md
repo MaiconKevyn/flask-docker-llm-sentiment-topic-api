@@ -1,85 +1,48 @@
-# Feedback Analysis Application
+# Flask Feedback Analysis API
 
-## Visão Geral
-Esta é uma aplicação web construída com Flask que permite analisar feedbacks de usuários para determinar o sentimento e classificar tópicos principais dos comentários. A aplicação utiliza modelos de classificação de sentimento e classificação de tópicos da biblioteca `transformers` da Hugging Face.
+This project is a Flask-based API designed to analyze user feedback by determining both the **sentiment** and the **topic** of a given comment. It leverages **Large Language Models (LLMs)** for zero-shot classification of topics and sentiment analysis. The application is containerized using **Docker** for easy deployment.
 
-## Estrutura do Projeto
-O projeto possui a seguinte estrutura de diretórios:
+## Key Features:
+- **Sentiment Analysis**: Classifies feedback into sentiments such as *positive*, *negative*, or *neutral* using the [`cardiffnlp/twitter-roberta-base-sentiment-latest`](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest) model.
+- **Topic Classification**: Identifies key topics from user comments (e.g., *Performance*, *Quality*, *Usability*) using the [`MoritzLaurer/deberta-v3-large-zeroshot-v2.0`](https://huggingface.co/MoritzLaurer/deberta-v3-large-zeroshot-v2.0) model.
+- **Dockerized**: The entire application is containerized, making it easy to run and deploy across different environments.
 
-feedback_analysis/
-├── app/
-│ ├── init.py
-│ ├── routes.py
-├── feedback_analysis_service/
-│ ├── init.py
-│ ├── feedback_analysis_service.py
-├── templates/
-│ ├── results.html
-│ ├── topic_sentiment.html
-├── config.py
-├── run.py
-├── logs/
-│ ├── feedback.log
-└── .gitignore
+## How It Works:
+1. The API accepts **POST** requests with user comments via the `/analyze` endpoint.
+2. The comment is processed to extract both the **sentiment** and relevant **topics**.
+3. A JSON response is returned with the analysis results.
+
+## Technologies Used:
+- **Flask**: A lightweight WSGI web framework for Python.
+- **Docker**: Containerization for deployment consistency.
+- **Hugging Face Transformers**: Pre-trained language models for natural language processing.
+
+## Getting Started:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/flask-feedback-analysis-api.git
 
 
-## Instalação
+2. Build and run the Docker container:
+    ```bash
+    docker build -t flask-app .
+    docker run -p 5000:5000 flask-app
 
-1. **Clone o Repositório**
-    ```sh
-    git clone https://github.com/seu-usuario/feedback-analysis.git
-    cd feedback-analysis
-    ```
+3. Send feedback comments to the /analyze endpoint via POST requests for analysis.
+Example Request (via curl):
 
-2. **Crie um Ambiente Virtual**
-    ```sh
-    python3 -m venv venv
-    source venv/bin/activate  # No Windows, use `venv\Scripts\activate`
-    ```
+    ```bash
+    curl -X POST http://127.0.0.1:5000/analyze -H "Content-Type: application/json" -d '{"comment": "This is a sample comment"}'
 
-3. **Instale as Dependências**
-    ```sh
-    pip install -r requirements.txt
-    ```
+4. Configuring Postman for POST Requests:
+To send a POST request using Postman, follow these steps:
+  - Open Postman and create a new POST request.
+  - Set the URL to: http://127.0.0.1:5000/analyze
 
-4. **Configure Variáveis de Ambiente**
-    Crie um arquivo `.env` ou configure variáveis de ambiente no seu sistema:
-    ```sh
-    export FLASK_APP=run.py
-    export FLASK_ENV=development
-    ```
+### Screenshot of the Request in Postman
+<img width="1518" alt="image" src="https://github.com/user-attachments/assets/42b5839f-a0d6-494f-971d-62451fa2fde0">
 
-## Como Executar
+### Screenshot of the Response in Docker
+![image](https://github.com/user-attachments/assets/b28af137-2c36-4e8f-af07-c392898c4ed6)
 
-1. **Inicie a Aplicação**
-    ```sh
-    flask run
-    ```
 
-2. **Acesse a Aplicação**
-    Abra o navegador e vá para `http://127.0.0.1:5000`.
-
-## Endpoints
-
-### `/analyze` [POST]
-Recebe um comentário e retorna a análise de sentimento e os tópicos principais.
-- **Corpo da Requisição**:
-    ```json
-    {
-        "comment": "Seu comentário aqui"
-    }
-    ```
-- **Resposta**:
-    ```json
-    {
-        "sentiment": "positive",
-        "topic": ["Usability"]
-    }
-    ```
-
-## Exemplo de Uso
-
-### Analisar Comentário
-Para analisar um comentário, faça uma requisição POST para `/analyze`:
-```sh
-curl -X POST http://127.0.0.1:5000/analyze -H "Content-Type: application/json" -d '{"comment": "This app is very helpful."}'ß
