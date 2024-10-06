@@ -22,19 +22,23 @@ This project is a Flask-based API designed to analyze user feedback by determini
    ```bash
    git clone https://github.com/your-username/flask-feedback-analysis-api.git
 
+2. Install dependencies: Make sure to install the required Python packages by running:
 
-2. Build and run the Docker container:
+   ```bash
+   pip install -r requirements.txt
+
+3. Build and run the Docker container:
     ```bash
     docker build -t flask-app .
     docker run -p 5000:5000 flask-app
 
-3. Send feedback comments to the /analyze endpoint via POST requests for analysis.
+4. Send feedback comments to the /analyze endpoint via POST requests for analysis.
 Example Request (via curl):
 
     ```bash
     curl -X POST http://127.0.0.1:5000/analyze -H "Content-Type: application/json" -d '{"comment": "This is a sample comment"}'
 
-4. Configuring Postman for POST Requests:
+5. Configuring Postman for POST Requests:
 To send a POST request using Postman, follow these steps:
   - Open Postman and create a new POST request.
   - Set the URL to: http://127.0.0.1:5000/analyze
