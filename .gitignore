@@ -1,1 +1,7 @@
 __pycache__/
+.codex
+.venv
+.idea/
+dist/
+build/
+node_modules/
